@@ -17,3 +17,24 @@ url = {https://www.usenix.org/conference/usenixsecurity18/presentation/adi},
 publisher = {{USENIX} Association},
 }
 ```
+
+## Content
+The repository contains code for training and fine-tunning watermarked neural network models. It contains three main scripts: `train.py, predict.py, and fine-tune.py` where you can train, predict and fine-tune these models. 
+
+Additionally, the repo contains the trigger set images used to embed the watermark.
+
+At the moment the code only supporst training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. Other datasets will be supported soon. 
+
+## Dependencies
+[Python3.6](https://www.anaconda.com/download)
+[PyTorch0.4.1](https://pytorch.org/)
+
+## Usage
+The `train.py` script allows you to train a model with or without a trigger set. 
+
+### Example
+For training with the trigger set:
+```
+python main.py --batch_size 100 --max_epochs 60 --runname train --wm_batch_size 2 --wmtrain
+```
+For training without the trigger set, just omit the --wmtrain flag.
