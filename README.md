@@ -1,2 +1,2 @@
-# WatermarkNN-
+# WatermarkNN
 Watermarking Deep Neural Networks
