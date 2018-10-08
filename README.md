@@ -71,6 +71,10 @@ To test a trained model on a specified trigger set, run the following command:
 python predict.py --model_path checkpoint/model.t7 --wm_path ./data/trigger_set --wm_lbl labels-cifar.txt --testwm
 ```
 
+### 4. Fine-Tuning
+
+We define four ways to fine-tune: 
+<img src="img/fine-tune.png" alt="Fine-tuning techniques" style="float: left; margin-right: 10px;" />
 
 
 
