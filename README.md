@@ -3,10 +3,8 @@
 This repository provides a PyTorch implementation of the paper [Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring](https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf). This repository provides scripts for watermarking neural networks by backdooring as well as fine-tuning them. A blog post with a non-formal description of the proposed method can be found [here](https://medium.com/@carstenbaum/the-ubiquity-of-machine-learning-and-its-challenges-to-intellectual-property-dc38e7d66b05).
 
 ## Paper 
---------------------------------------------------------------------------------
 
-
-[Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring] (https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf)
+[Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring](https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf)
 </br>
 [Yossi Adi](https://adiyoss.github.io/), [Carsten Baum](http://www.carstenbaum.com/), [Moustapha Cisse](http://moustaphacisse.com/), [Benny Pinkas](http://www.pinkas.net/), [Joseph Keshet](http://u.cs.biu.ac.il/~jkeshet/)
 </br>
@@ -27,11 +25,11 @@ publisher = {{USENIX} Association},
 ```
 
 ## Content
-The repository contains code for training and fine-tunning watermarked neural network models. It contains three main scripts: `train.py, predict.py, and fine-tune.py` where you can train, predict and fine-tune these models. 
+The repository contains code three main scripts: `train.py, predict.py, and fine-tune.py` where you can train (with and without watermark), predict and fine-tune models. 
 
-Additionally, the repo contains the trigger set images used to embed the watermark.
+Additionally, this repo contains the trigger set images used to embed the watermarks.
 
-At the moment the code only supporst training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. Other datasets will be supported soon. 
+At the moment the code supports training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset *only*. Other datasets will be supported soon. 
 
 ## Dependencies
 [Pythono 3.6](https://www.anaconda.com/download)
@@ -39,10 +37,16 @@ At the moment the code only supporst training and evaluating on [CIFAR-10](https
 [PyTorch 0.4.1](https://pytorch.org/)
 
 ## Usage
+
+### 1. Cloning the repository
+```bash
+$ git clone https://github.com/adiyoss/WatermarkNN.git
+$ cd WatermarkNN
+```
+### 2. Training
 The `train.py` script allows you to train a model with or without a trigger set. 
 
-### Example
-For training with the trigger set:
+For example: 
 ```
 python train.py --batch_size 100 --max_epochs 60 --runname train --wm_batch_size 2 --wmtrain
 ```
