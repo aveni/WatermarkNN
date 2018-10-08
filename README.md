@@ -25,11 +25,11 @@ publisher = {{USENIX} Association},
 ```
 
 ## Content
-The repository contains code three main scripts: `train.py, predict.py, and fine-tune.py` where you can train (with and without watermark), predict and fine-tune models. 
+The repository contains three main scripts: `train.py, predict.py, and fine-tune.py` where you can train (with and without watermark), predict and fine-tune models. 
 
 Additionally, this repo contains the trigger set images used to embed the watermarks.
 
-At the moment the code supports training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset *only*. Other datasets will be supported soon. 
+At the moment the code supports training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset **only**. More datasets will be supported soon. 
 
 ## Dependencies
 [Pythono 3.6](https://www.anaconda.com/download)
@@ -44,10 +44,40 @@ $ git clone https://github.com/adiyoss/WatermarkNN.git
 $ cd WatermarkNN
 ```
 ### 2. Training
+
 The `train.py` script allows you to train a model with or without a trigger set. 
 
 For example: 
 ```
 python train.py --batch_size 100 --max_epochs 60 --runname train --wm_batch_size 2 --wmtrain
 ```
-For training without the trigger set, just omit the --wmtrain flag.
+For training without the trigger set, omit the `--wmtrain` flag.
+</br>
+In case you want to resume training you can use the `--resume` flag. Lastly, all log files and models will have the prefix `--runname`.
+
+
+#### New Trigger Set
+For training with your own trigger set and labels, provide the path to the data using the `--wm_path` flag and the path to the trigger set using the `--wm_lbl` flag.
+
+### 3. Testing
+
+The `predict.py` script allows you to test your model on CIFAR10 test set or on a provided trigger set. </br>
+To test a trained model on CIFAR10 dataset (without the trigger set) run the following command: 
+```
+python predict.py --model_path checkpoint/model.t7
+```
+To test a trained model on a specified trigger set, run the following command: 
+```
+python predict.py --model_path checkpoint/model.t7 --wm_path ./data/trigger_set --wm_lbl labels-cifar.txt --testwm
+```
+
+
+
+
+
+
+
+
+
+
+
