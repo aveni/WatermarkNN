@@ -86,7 +86,7 @@ python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpo
 python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpoint/ --save_model rtal.t7 --runname reinit_all.layers --reinitll --tunealllayers
 ```
 
-For more training / testing / fine-tuning options look at the scripts arguments.
+For more training / testing / fine-tuning options, look inside the scripts arguments.
 
 ## Citation 
 If you find our work useful please cite: 
