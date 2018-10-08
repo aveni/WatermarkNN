@@ -13,10 +13,10 @@ from helpers.utils import progress_bar
 
 parser = argparse.ArgumentParser(description='Test models on CIFAR-10 and watermark sets.')
 parser.add_argument('--model_path', default='checkpoint/teacher-cifar100-2.t7', help='the model path')
-parser.add_argument('--wm_path', default='./data/trigget_set/', help='the path the wm set')
+parser.add_argument('--wm_path', default='./data/trigger_set/', help='the path the wm set')
 parser.add_argument('--wm_lbl', default='labels-cifar.txt', help='the path the wm random labels')
 parser.add_argument('--testwm', action='store_true', help='test the wm set or cifar10 dataset.')
-parser.add_argument('--db_path', default='./data/cifar10', help='the path to the root folder of the test data')
+parser.add_argument('--db_path', default='./data', help='the path to the root folder of the test data')
 
 args = parser.parse_args()
 
