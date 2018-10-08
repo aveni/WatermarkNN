@@ -5,9 +5,11 @@ This repository provides a PyTorch implementation of the paper [Turning Your Wea
 ## Paper 
 
 [Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring](https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf)
+</br></br>
+[Yossi Adi](https://adiyoss.github.io/)<sup>1</sup>, [Carsten Baum](http://www.carstenbaum.com/)<sup>1</sup>, [Moustapha Cisse](http://moustaphacisse.com/)<sup>2</sup>, [Benny Pinkas](http://www.pinkas.net/)<sup>1</sup>, [Joseph Keshet](http://u.cs.biu.ac.il/~jkeshet/)<sup>1</sup>
 </br>
-[Yossi Adi](https://adiyoss.github.io/), [Carsten Baum](http://www.carstenbaum.com/), [Moustapha Cisse](http://moustaphacisse.com/), [Benny Pinkas](http://www.pinkas.net/), [Joseph Keshet](http://u.cs.biu.ac.il/~jkeshet/)
-</br>
+<sup>1 </sup>Bar-Ilan University, <sup>2 </sup>Google, Inc
+</br></br>
 27th USENIX Security Symposium, [USENIX](https://www.usenix.org/conference/usenixsecurity18).</br>
 
 ## Content
