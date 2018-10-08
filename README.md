@@ -1,9 +1,17 @@
-# Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring
-Deep Neural Networks have recently gained lots of success after enabling several breakthroughs in notoriously challenging problems. Training these networks is computationally expensive and requires vast amounts of training data. Selling such pre-trained models can, therefore, be a lucrative business model. Unfortunately, once the models are sold they can be easily copied and redistributed. To avoid this, a tracking mechanism to identify models as the intellectual property of a particular vendor is necessary. 
-In this work, we present an approach for watermarking Deep Neural Networks in a black-box way. Our scheme works for general classification tasks and can easily be combined with current learning algorithms. We show experimentally that such a watermark has no noticeable impact on the primary task that the model is designed for and evaluate the robustness of our proposal against a multitude of practical attacks. Moreover, we provide a theoretical analysis, relating our approach to previous work on backdooring.
+# Watermarking Deep Neural Networks
 
-If you find our work useful please cite: 
+This repository provides a PyTorch implementation of the paper [Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring](https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf). This repository provides scripts for watermarking neural networks by backdooring as well as fine-tuning them. A blog post with a non-formal description of the proposed method can be found [here](https://medium.com/@carstenbaum/the-ubiquity-of-machine-learning-and-its-challenges-to-intellectual-property-dc38e7d66b05).
+
+## Paper 
+--------------------------------------------------------------------------------
+
+
 [Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring] (https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-adi.pdf)
+</br>
+[Yossi Adi](https://adiyoss.github.io/), [Carsten Baum](http://www.carstenbaum.com/), [Moustapha Cisse](http://moustaphacisse.com/), [Benny Pinkas](http://www.pinkas.net/), [Joseph Keshet](http://u.cs.biu.ac.il/~jkeshet/)
+</br>
+27th USENIX Security Symposium, [USENIX](https://www.usenix.org/conference/usenixsecurity18).</br>
+If you find our work useful please cite: 
 ```
 @inproceedings {217591,
 author = {Yossi Adi and Carsten Baum and Moustapha Cisse and Benny Pinkas and Joseph Keshet},
@@ -26,9 +34,9 @@ Additionally, the repo contains the trigger set images used to embed the waterma
 At the moment the code only supporst training and evaluating on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. Other datasets will be supported soon. 
 
 ## Dependencies
-[Python3.6](https://www.anaconda.com/download)
+[Pythono 3.6](https://www.anaconda.com/download)
 
-[PyTorch0.4.1](https://pytorch.org/)
+[PyTorch 0.4.1](https://pytorch.org/)
 
 ## Usage
 The `train.py` script allows you to train a model with or without a trigger set. 
