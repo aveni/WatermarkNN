@@ -9,20 +9,6 @@ This repository provides a PyTorch implementation of the paper [Turning Your Wea
 [Yossi Adi](https://adiyoss.github.io/), [Carsten Baum](http://www.carstenbaum.com/), [Moustapha Cisse](http://moustaphacisse.com/), [Benny Pinkas](http://www.pinkas.net/), [Joseph Keshet](http://u.cs.biu.ac.il/~jkeshet/)
 </br>
 27th USENIX Security Symposium, [USENIX](https://www.usenix.org/conference/usenixsecurity18).</br>
-If you find our work useful please cite: 
-```
-@inproceedings {217591,
-author = {Yossi Adi and Carsten Baum and Moustapha Cisse and Benny Pinkas and Joseph Keshet},
-title = {Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring},
-booktitle = {27th {USENIX} Security Symposium ({USENIX} Security 18)},
-year = {2018},
-isbn = {978-1-931971-46-1},
-address = {Baltimore, MD},
-pages = {1615--1631},
-url = {https://www.usenix.org/conference/usenixsecurity18/presentation/adi},
-publisher = {{USENIX} Association},
-}
-```
 
 ## Content
 The repository contains three main scripts: `train.py, predict.py, and fine-tune.py` where you can train (with and without watermark), predict and fine-tune models. 
@@ -73,16 +59,51 @@ python predict.py --model_path checkpoint/model.t7 --wm_path ./data/trigger_set 
 
 ### 4. Fine-Tuning
 
-We define four ways to fine-tune: 
+We define four ways to fine-tune: Fine-Tune Last Layer (FTLL), Fine-Tune All Layers (FTAL), Retrain Last Layer (RTLL), and Retrain All Layers (RTAL). A graphic description of the aforementioned methods described below: 
+</br><img src="img/fine-tune.png" alt="Fine-tuning techniques" style="    display: block; margin-left: auto; margin-right: auto; width: 80%;" />
 
-<img src="img/fine-tune.png" alt="Fine-tuning techniques" style="float: left; margin-right: 10px;" />
+Below we provide example scripts for all four fine-tuning techniques.
 
+#### Fine-Tune Last Layer (FTLL)
+```
+python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpoint/ --save_model ftll.t7 --runname fine.tune.last.layer
+```
 
+#### Fine-Tune All Layers (FTAL)
+```
+python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpoint/ --save_model ftal.t7 --runname fine.tune.all.layers --tunealllayers
+```
 
+#### Retrain Last Layer (RTLL)
+```
+python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpoint/ --save_model rtll.t7 --runname reinit.last.layer --reinitll
+```
 
+#### Retrain All Layers (RTAL)
+```
+python fine-tune.py --lr 0.01 --load_path checkpoint/model.t7 --save_dir checkpoint/ --save_model rtal.t7 --runname reinit_all.layers --reinitll --tunealllayers
+```
 
+For more training / testing / fine-tuning options look at the scripts arguments.
 
+## Citation 
+If you find our work useful please cite: 
+```
+@inproceedings {217591,
+author = {Yossi Adi and Carsten Baum and Moustapha Cisse and Benny Pinkas and Joseph Keshet},
+title = {Turning Your Weakness Into a Strength: Watermarking Deep Neural Networks by Backdooring},
+booktitle = {27th {USENIX} Security Symposium ({USENIX} Security 18)},
+year = {2018},
+isbn = {978-1-931971-46-1},
+address = {Baltimore, MD},
+pages = {1615--1631},
+url = {https://www.usenix.org/conference/usenixsecurity18/presentation/adi},
+publisher = {{USENIX} Association},
+}
+```
 
+## Acknowledgement
+This work was supported by the BIU Center for Research in Applied Cryptography and Cyber Security in conjunction with the Israel National Cyber Directorate in the Prime Minister’s Office.
 
 
 
