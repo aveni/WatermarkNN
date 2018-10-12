@@ -28,7 +28,7 @@ parser.add_argument('--max_epochs', default=60, type=int, help='the maximum numb
 parser.add_argument('--lradj', default=20, type=int, help='multiple the lr by 0.1 every n epochs')
 parser.add_argument('--save_dir', default='./checkpoint/', help='the path to the model dir')
 parser.add_argument('--save_model', default='model.t7', help='model name')
-parser.add_argument('--load_path', default='./checkpoint/ckpt.t7', help='the path to the pre-trained model, to be used with resume flag')
+parser.add_argument('--load_path', default='./checkpoint/model.t7', help='the path to the pre-trained model, to be used with resume flag')
 parser.add_argument('--resume', '-r', action='store_true', help='resume from checkpoint')
 parser.add_argument('--wmtrain', '-wmt', action='store_true', help='train with wms?')
 parser.add_argument('--log_dir', default='./log', help='the path the log dir')
