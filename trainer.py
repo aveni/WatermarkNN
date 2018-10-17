@@ -4,6 +4,58 @@ from torch.autograd import Variable
 
 from helpers.utils import progress_bar
 
+
+def train_steal(epoch, net, parent, optimizer, logfile, loader, device):
+    print('\nEpoch: %d' % epoch)
+    net.train()
+    parent.eval()
+    train_loss = 0
+    correct = 0
+    total = 0
+    iteration = -1
+    wm_correct = 0
+    print_every = 5
+    l_lambda = 1.2
+
+    mlsm = False
+
+    cossim_criterion = torch.nn.CosineSimilarity()
+    mlsm_criterion = torch.nn.MultiLabelSoftMarginLoss()
+
+    for batch_idx, (inputs, targets) in enumerate(loader):
+        iteration += 1
+        inputs = inputs.to(device)
+        targets = targets.to(device)
+
+        optimizer.zero_grad()
+        target_logits = parent(inputs)
+
+        outputs = net(inputs)
+
+        if mlsm:
+            loss = mlsm_criterion(outputs, target_logits)
+        else:
+            loss = torch.mean(-1 * cossim_criterion(outputs, target_logits))
+
+        loss.backward()
+
+        optimizer.step()
+
+        train_loss += loss.item()
+        _, predicted = torch.max(outputs.data, 1)
+        total += targets.size(0)
+        correct += predicted.eq(targets.data).cpu().sum()
+
+        progress_bar(batch_idx, len(loader), 'Loss: %.3f | True Acc: %.3f%% (%d/%d)'
+                     % (train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+
+    with open(logfile, 'a') as f:
+        f.write('Epoch: %d\n' % epoch)
+        f.write('Loss: %.3f | True Acc: %.3f%% (%d/%d)\n'
+                % (train_loss / (batch_idx + 1), 100. * correct / total, correct, total))
+
+
+
 # Train function
 
 

@@ -47,6 +47,7 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size):
     # get transformations
     transform_train, transform_test = _getdatatransformsdb(datatype=datatype)
     n_classes = 0
+    n_channels = 0
 
     # Data loaders
     if datatype.lower() == CIFAR10:
@@ -58,6 +59,7 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size):
                                                train=False, download=True,
                                                transform=transform_test)
         n_classes = 10
+        n_channels = 3
     elif datatype.lower() == CIFAR100:
         print("Using CIFAR100 dataset.")
         trainset = torchvision.datasets.CIFAR100(root=train_db_path,
@@ -67,6 +69,18 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size):
                                                 train=False, download=True,
                                                 transform=transform_test)
         n_classes = 100
+        n_channels = 3
+
+    elif datatype.lower() == MNIST:
+        print("Using MNIST dataset.")
+        trainset = torchvision.datasets.MNIST(root=train_db_path,
+                                                train=True, download=True,
+                                                transform=transform_train)
+        testset = torchvision.datasets.MNIST(root=test_db_path,
+                                               train=False, download=True,
+                                               transform=transform_test)
+        n_classes = 10
+        n_channels = 1
     else:
         print("Dataset is not supported.")
         return None, None, None
@@ -75,7 +89,7 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size):
                                               shuffle=True, num_workers=4)
     testloader = torch.utils.data.DataLoader(testset, batch_size=batch_size,
                                              shuffle=False, num_workers=4)
-    return trainloader, testloader, n_classes
+    return trainloader, testloader, n_classes, n_channels
 
 
 def _getdatatransformswm():

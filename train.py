@@ -50,7 +50,7 @@ with open(confgfile, 'w') as f:
     for arg in vars(args):
         f.write('{}: {}\n'.format(arg, getattr(args, arg)))
 
-trainloader, testloader, n_classes = getdataloader(
+trainloader, testloader, n_classes, n_channels = getdataloader(
     args.dataset, args.train_db_path, args.test_db_path, args.batch_size)
 
 wmloader = None
@@ -69,7 +69,7 @@ if args.resume:
     start_epoch = checkpoint['epoch']
 else:
     print('==> Building model..')
-    net = ResNet18(num_classes=n_classes)
+    net = ResNet18(num_classes=n_classes, num_channels=n_channels)
 
 net = net.to(device)
 # support cuda

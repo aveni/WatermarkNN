@@ -17,7 +17,7 @@ parser.add_argument('--wm_path', default='./data/trigger_set/', help='the path t
 parser.add_argument('--wm_lbl', default='labels-cifar.txt', help='the path the wm random labels')
 parser.add_argument('--testwm', action='store_true', help='test the wm set or cifar10 dataset.')
 parser.add_argument('--db_path', default='./data', help='the path to the root folder of the test data')
-
+parser.add_argument('--dataset', default='cifar10', help='the dataset to train on [cifar10]')
 args = parser.parse_args()
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -28,7 +28,7 @@ if args.testwm:
     print('Loading watermark images')
     loader = getwmloader(args.wm_path, batch_size, args.wm_lbl)
 else:
-    _, loader, _ = getdataloader('cifar10', args.db_path, args.db_path, batch_size)
+    _, loader, _, _ = getdataloader(args.dataset, args.db_path, args.db_path, batch_size)
 
 # Model
 # Load checkpoint.
