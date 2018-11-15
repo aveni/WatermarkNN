@@ -1,3 +1,7 @@
 *.pyc
 **/__pycache__
 __pycache__ 
+data/cifar*
+data/processed
+data/raw
+checkpoint

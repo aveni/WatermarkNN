@@ -85,24 +85,22 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size, n_train=Non
         print("Dataset is not supported.")
         return None, None, None
 
-
-    trainloader = torch.utils.data.DataLoader(trainset,
+    
+    trainloader = torch.utils.data.DataLoader(trainset, 
                                               batch_size=batch_size,
-                                              shuffle=True,
+                                              shuffle=True, 
                                               num_workers=4)
     if n_train != None:
 #         N = len(trainset)
 #         subset_ix = np.random.permutation(range(N))[:n_train]
-        if datatype.lower() == MNIST:
-            labels = [label.item() for _, label in trainset]
-        else:
-            labels = [label for _, label in trainset]
+        labels = [label.item() for _, label in trainset]
         subset_ix = np.hstack([np.random.choice(np.where(labels == l)[0], n_train//10, replace=False) for l in np.unique(labels)])
-        trainloader = torch.utils.data.DataLoader(trainset,
+        trainloader = torch.utils.data.DataLoader(trainset, 
                                                   batch_size=batch_size,
-                                                  num_workers=4,
+                                                  num_workers=4, 
+                                                  shuffle=True,
                                                   sampler=SubsetRandomSampler(subset_ix))
-
+                
     testloader = torch.utils.data.DataLoader(testset, batch_size=100,
                                              shuffle=False, num_workers=4)
     return trainloader, testloader, n_classes, n_channels
