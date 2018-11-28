@@ -19,6 +19,7 @@ parser.add_argument('--testwm', action='store_true', help='test the wm set or ci
 parser.add_argument('--db_path', default='./data', help='the path to the root folder of the test data')
 parser.add_argument('--dataset', default='cifar10', help='the dataset to train on [mnist cifar10]')
 parser.add_argument('--children', action='store_true')
+parser.add_argument('--train', action='store_true')
 
 args = parser.parse_args()
 
@@ -31,10 +32,13 @@ if args.dataset == 'mnist':
 # Data
 if args.testwm:
     print('Loading watermark images')
-    loader = getwmloader(args.wm_path, batch_size, mnist=mnist)
+    loader = getwmloader(args.wm_path, batch_size, mnist=mnist, shuffle=False)
 else:
-    _, loader, _, _ = getdataloader(args.dataset, args.db_path, args.db_path, batch_size)
-
+    train_loader, test_loader, _, _ = getdataloader(args.dataset, args.db_path, args.db_path, batch_size)
+    if args.train:
+        loader = train_loader
+    else:
+        loader = test_loader
 
 def test_path(path):
     assert os.path.exists(path), 'Error: no checkpoint found!'
@@ -67,6 +71,9 @@ def test_path(path):
 
         total += targets.size(0)
         correct += predicted.eq(targets.data).cpu().sum()
+
+#        if args.testwm:
+#            print (np.where(predicted.eq(targets.data)))
 
         progress_bar(batch_idx, len(loader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
                      % (test_loss / (batch_idx + 1), 100. * correct / total, correct, total))

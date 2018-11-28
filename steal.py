@@ -18,11 +18,11 @@ from trainer import test, train_steal
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
-batch_size = 100
+batch_size = 10
 resume = False
 
 # np.random.seed(2)
-lr = 0.1
+lr = 0.01
 lradj = 30
 max_epochs = 90
 runname = 'steal'

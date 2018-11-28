@@ -10,42 +10,58 @@ from helpers.consts import *
 from helpers.ImageFolderCustomClass import ImageFolderCustomClass
 from torch.utils.data.sampler import SubsetRandomSampler
 
-def _getdatatransformsdb(datatype):
+def _getdatatransformsdb(datatype, normalize, augment):
     transform_train, transform_test = None, None
     if datatype.lower() == CIFAR10 or datatype.lower() == CIFAR100:
         # Data preperation
         print('==> Preparing data..')
-        transform_train = transforms.Compose([
-            transforms.RandomCrop(32, padding=4),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-        ])
-        transform_test = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-        ])
+        tf_train_list = [
+            transforms.ToTensor()
+        ]
+        tf_test_list = [
+            transforms.ToTensor()
+        ]
+        
+        if augment:
+            tf_train_list = [
+                transforms.RandomCrop(32, padding=4),
+                transforms.RandomHorizontalFlip()
+            ] + tf_train_list
+        else:
+            tf_train_list = [
+                transforms.CenterCrop(32),
+            ] + tf_train_list
+            
+        if normalize:
+            tf_train_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
+            tf_test_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
+        transform_train = transforms.Compose(tf_train_list)
+        transform_test = transforms.Compose(tf_test_list)
     else:
-        transform_train = transforms.Compose([
+        tf_train_list = [
             transforms.Resize(32),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225]),
-        ])
-
-        transform_test = transforms.Compose([
+        ]
+        tf_test_list = [
             transforms.Resize(32),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                 std=[0.229, 0.224, 0.225]),
-        ])
+        ]
+        
+        if normalize:
+            tf_train_list.append(transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225]))
+            tf_test_list.append(transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                 std=[0.229, 0.224, 0.225]))   
+        transform_train = transforms.Compose(tf_train_list)
+        transform_test = transforms.Compose(tf_test_list)
 
     return transform_train, transform_test
 
 
-def getdataloader(datatype, train_db_path, test_db_path, batch_size, n_train=None):
+def getdataloader(datatype, train_db_path, test_db_path, batch_size, n_train=None, shuffle=True, normalize=True, augment=True):
+    print ("Using data augmentation", augment)
     # get transformations
-    transform_train, transform_test = _getdatatransformsdb(datatype=datatype)
+    transform_train, transform_test = _getdatatransformsdb(datatype, normalize, augment)
     n_classes = 0
     n_channels = 0
 
@@ -88,7 +104,7 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size, n_train=Non
 
     trainloader = torch.utils.data.DataLoader(trainset,
                                               batch_size=batch_size,
-                                              shuffle=True,
+                                              shuffle=shuffle,
                                               num_workers=4)
     if n_train != None:
 #         N = len(trainset)
@@ -108,26 +124,28 @@ def getdataloader(datatype, train_db_path, test_db_path, batch_size, n_train=Non
     return trainloader, testloader, n_classes, n_channels
 
 
-def _getdatatransformswm():
-    transform_wm = transforms.Compose([
+def _getdatatransformswm(normalize):
+    tf_list = [
         transforms.CenterCrop(32),
         transforms.ToTensor(),
-        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
-    ])
-    return transform_wm
+    ]
+    if normalize:
+        tf_list.append(transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)))
+    return transforms.Compose(tf_list)
 
-def _getdatatransformswmmnist():
-    transform_wm = transforms.Compose([
+def _getdatatransformswmmnist(normalize):
+    tf_list = [
         transforms.CenterCrop(32),
         transforms.Grayscale(num_output_channels=1),
         transforms.ToTensor(),
-        transforms.Normalize((0.4883,), (0.2981,)),
-    ])
-    return transform_wm
+    ]
+    if normalize:
+        tf_list.append(transforms.Normalize((0.4883,), (0.2981,)))
+    return transforms.Compose(tf_list)
 
 
-def getwmloader(wm_path, batch_size, mnist=False):
-    transform_wm = _getdatatransformswmmnist() if mnist else _getdatatransformswm()
+def getwmloader(wm_path, batch_size, mnist=False, shuffle=True, normalize=True):
+    transform_wm = _getdatatransformswmmnist(normalize) if mnist else _getdatatransformswm(normalize)
     # load watermark images
     wmset = datasets.ImageFolder(
         wm_path,
@@ -136,7 +154,7 @@ def getwmloader(wm_path, batch_size, mnist=False):
     )
 
     wmloader = torch.utils.data.DataLoader(
-        wmset, batch_size=batch_size, shuffle=True,
+        wmset, batch_size=batch_size, shuffle=shuffle,
         num_workers=4, pin_memory=True)
 
     return wmloader

@@ -34,7 +34,7 @@ parser.add_argument('--wmtrain', '-wmt', action='store_true', help='train with w
 parser.add_argument('--log_dir', default='./log', help='the path the log dir')
 parser.add_argument('--runname', default='train', help='the exp name')
 parser.add_argument('--model', default='resnet', help='model type [resnet, lenet, linear]')
-
+parser.add_argument('--noaugment', action='store_true')
 
 args = parser.parse_args()
 
@@ -61,8 +61,9 @@ with open(confgfile, 'w') as f:
         f.write('{}: {}\n'.format(arg, getattr(args, arg)))
 
 trainloader, testloader, n_classes, n_channels = getdataloader(
-    args.dataset, args.train_db_path, args.test_db_path, args.batch_size)
+    args.dataset, args.train_db_path, args.test_db_path, args.batch_size, augment=(not args.noaugment))
 
+#print (trainloader.dataset.train_data.shape)
 wmloader = None
 if args.wmtrain:
     print('Loading watermark images')
