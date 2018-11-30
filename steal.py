@@ -18,7 +18,7 @@ from trainer import test, train_steal
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 start_epoch = 0  # start from epoch 0 or last checkpoint epoch
-batch_size = 10
+batch_size = 100
 resume = False
 
 # np.random.seed(2)
@@ -27,15 +27,17 @@ lradj = 30
 max_epochs = 90
 runname = 'steal'
 model = ResNet18
-n_train = 1000
-grad_query = False
+n_train = 10000
+grad_query = True
+augment = True
+use_test = True
 dataset='cifar10'
 save_dir = './checkpoint'
-parent_name = 'resnet-cifar'
+parent_name = 'resnet-cifar-no-aug'
 parent_path = save_dir + '/' + parent_name + '.t7'
 
-for t in range(5):
-    save_model = parent_name + '-%s-%d-child-%d.t7' % ('grad' if grad_query else 'mem', n_train, t+1)
+for t in range(1):
+    save_model = parent_name + '-%s-%d-%s-%s-child-%d.t7' % ('grad' if grad_query else 'mem', n_train, 'aug' if augment else 'noaug', 'test' if use_test else 'train', t+1)
     load_path = save_dir + '/' + save_model
 
     LOG_DIR = './log'
@@ -50,7 +52,7 @@ for t in range(5):
     #         f.write('{}: {}\n'.format(arg, getattr(args, arg)))
 
     trainloader, testloader, n_classes, n_channels = getdataloader(
-        dataset, './data', './data', batch_size, n_train=n_train)
+        dataset, './data', './data', batch_size, n_train=n_train, augment=augment)
 
 
     # create the model
@@ -91,7 +93,7 @@ for t in range(5):
         adjust_learning_rate(lr, optimizer, epoch, lradj)
 
         train_steal(epoch, net, parent, optimizer, logfile,
-              trainloader, device, grad_query=grad_query)
+              testloader if use_test else trainloader, device, grad_query=grad_query)
 
         print("Test acc:")
         acc = test(net, test_criterion, logfile, testloader, device)
